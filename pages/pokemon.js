@@ -49,25 +49,14 @@ export default function Pokemon() {
       pokemonCards[Math.floor(Math.random() * pokemonCards.length)];
     let oppCardTwo =
       pokemonCards[Math.floor(Math.random() * pokemonCards.length)];
-    let oppCardThree =
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)];
 
-    if (
-      Number(oppCardOne?.hp) >= Number(oppCardTwo?.hp) &&
-      Number(oppCardOne?.hp) >= Number(oppCardThree?.hp)
-    ) {
+    if (Number(oppCardOne?.hp) >= Number(oppCardTwo?.hp)) {
       twoCards.push(oppCardOne);
-    } else if (
-      Number(oppCardTwo?.hp) >= Number(oppCardOne?.hp) &&
-      Number(oppCardTwo?.hp) >= Number(oppCardThree?.hp)
-    ) {
-      twoCards.push(oppCardTwo);
     } else {
-      twoCards.push(oppCardThree);
+      twoCards.push(oppCardTwo);
     }
 
     let oppCardChoices = [
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
       pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
       pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
     ];
