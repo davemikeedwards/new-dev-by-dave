@@ -98,10 +98,10 @@ export default function Pokemon() {
   }, [yourScore, oppScore]);
 
   useEffect(() => {
-    if (oppPokemon) {
+    if (imageOneLoaded && imageTwoLoaded && oppPokemon) {
       checkScore();
     }
-  }, [oppPokemon]);
+  }, [imageOneLoaded, imageTwoLoaded, oppPokemon]);
 
   useEffect(() => {
     pokemonCards &&
