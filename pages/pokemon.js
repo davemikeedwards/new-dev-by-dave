@@ -19,6 +19,8 @@ export default function Pokemon() {
   const [yourScore, setYourScore] = useState(0);
   const [oppScore, setOppScore] = useState(0);
   const [winner, setWinner] = useState(undefined);
+  const [imageOneLoaded, setImageOneLoaded] = useState(false);
+  const [imageTwoLoaded, setImageTwoLoaded] = useState(false);
 
   const ballRef = useRef();
   const ballRef2 = useRef();
@@ -37,6 +39,8 @@ export default function Pokemon() {
 
     setTimeout(() => {
       setShowBalls(true);
+      setImageOneLoaded(false);
+      setImageTwoLoaded(false);
       setYourPokemon(undefined);
       setOppPokemon(undefined);
     }, 200);
@@ -253,6 +257,7 @@ export default function Pokemon() {
                             alt="card"
                             className="w-60"
                             src={yourPokemon?.image}
+                            onLoad={() => setImageOneLoaded(true)}
                           />
                         )}
                       </div>
@@ -269,13 +274,14 @@ export default function Pokemon() {
                             alt="card"
                             className="w-60"
                             src={oppPokemon?.image}
+                            onLoad={() => setImageTwoLoaded(true)}
                           />
                         )}
                       </div>
                     </div>
                     {!winner ? (
                       <>
-                        {!showBalls ? (
+                        {!showBalls && imageOneLoaded && imageTwoLoaded ? (
                           <div className="w-full flex justify-center">
                             <div
                               className="mt-8 py-6 px-12 font-nunito text-xl bg-red-600 text-center w-max cursor-pointer rounded-xl shadow-md text-white"
@@ -284,7 +290,7 @@ export default function Pokemon() {
                               AGAIN
                             </div>
                           </div>
-                        ) : (
+                        ) : showBalls ? (
                           <>
                             <div className="flex relative gap-3 justify-center w-full">
                               <img
@@ -349,6 +355,8 @@ export default function Pokemon() {
                               />
                             </div>
                           </>
+                        ) : (
+                          <>LOADING</>
                         )}{" "}
                       </>
                     ) : (
@@ -493,6 +501,7 @@ export default function Pokemon() {
                           alt="card"
                           className="w-48"
                           src={yourPokemon?.image}
+                          onLoad={() => setImageOneLoaded(true)}
                         />
                       )}
                       YOU
@@ -510,6 +519,7 @@ export default function Pokemon() {
                           alt="card"
                           className="w-48"
                           src={oppPokemon?.image}
+                          onLoad={() => setImageTwoLoaded(true)}
                         />
                       )}
                     </div>
@@ -518,7 +528,7 @@ export default function Pokemon() {
                     <div />
                     {!winner ? (
                       <>
-                        {!showBalls ? (
+                        {!showBalls && imageOneLoaded && imageTwoLoaded ? (
                           <div className="w-full flex justify-center">
                             <div
                               className="-mt-32 h-16 flex items-center px-12 font-nunito text-xl bg-red-600 text-center cursor-pointer w-max rounded-xl shadow-md text-white"
@@ -527,7 +537,7 @@ export default function Pokemon() {
                               AGAIN
                             </div>
                           </div>
-                        ) : (
+                        ) : showBalls ? (
                           <div className="flex flex-col -mt-36 justify-center w-full">
                             <div className="flex justify-center">
                               <img
@@ -593,6 +603,14 @@ export default function Pokemon() {
                                 }
                               />
                             </div>
+                          </div>
+                        ) : (
+                          <div className="w-full flex justify-center">
+                            <img
+                              alt="spinner"
+                              className="w-12 animate-spin"
+                              src="/images/loading.png"
+                            />
                           </div>
                         )}
                       </>
