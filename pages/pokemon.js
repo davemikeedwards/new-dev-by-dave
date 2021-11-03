@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { InnerMargins, OuterShellPadding } from "../components/layout";
 import {
+  getOppCard,
   getPokemon,
-  greatBallRandomizer,
-  ultraBallRandomizer,
+  HowToPlay,
+  PokeBallSelector,
+  PokeBallSelectorMobile,
 } from "../data/helpers/pokemon-helpers";
 
 export default function Pokemon() {
-  const [drawCards, setDrawCards] = useState(undefined);
+  const [drawCards, setDrawCards] = useState([]);
   const [pokemonCards, setPokemonCards] = useState([]);
   const [showBalls, setShowBalls] = useState(true);
   const [yourPokemon, setYourPokemon] = useState(undefined);
@@ -31,11 +33,17 @@ export default function Pokemon() {
   }, []);
 
   function resetPokemon() {
-    setDrawCards({
-      cardOne: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-      cardTwo: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-      cardThree: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-    });
+    setDrawCards([
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+    ]);
 
     setTimeout(() => {
       setShowBalls(true);
@@ -46,37 +54,11 @@ export default function Pokemon() {
     }, 200);
   }
 
-  function getOppCard() {
-    let twoCards = [];
-
-    let oppCardOne =
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)];
-    let oppCardTwo =
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)];
-
-    if (Number(oppCardOne?.hp) >= Number(oppCardTwo?.hp)) {
-      twoCards.push(oppCardOne);
-    } else {
-      twoCards.push(oppCardTwo);
-    }
-
-    let oppCardChoices = [
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-      pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-    ];
-
-    twoCards.push(
-      oppCardChoices[Math.floor(Math.random() * oppCardChoices.length)]
-    );
-
-    return twoCards[Math.floor(Math.random() * twoCards.length)];
-  }
-
   function throwPokeBall(card) {
     setTimeout(() => {
       setShowBalls(false);
       setYourPokemon(card);
-      setOppPokemon(getOppCard());
+      setOppPokemon(getOppCard(pokemonCards));
     }, 550);
   }
 
@@ -105,12 +87,17 @@ export default function Pokemon() {
 
   useEffect(() => {
     pokemonCards &&
-      setDrawCards({
-        cardOne: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-        cardTwo: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-        cardThree:
-          pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
-      });
+      setDrawCards([
+        {
+          card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+        },
+        {
+          card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+        },
+        {
+          card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+        },
+      ]);
   }, [pokemonCards]);
 
   return (
@@ -157,87 +144,11 @@ export default function Pokemon() {
                 {showTutorial && (
                   <div>
                     <div className="my-12">
-                      {howToPlayStep === 1 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(2)}
-                          src="/images/pokemon/Oak1.gif"
-                        />
-                      ) : howToPlayStep === 2 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(3)}
-                          src="/images/pokemon/Oak2.gif"
-                        />
-                      ) : howToPlayStep === 3 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(4)}
-                          src="/images/pokemon/Oak3.gif"
-                        />
-                      ) : howToPlayStep === 4 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(5)}
-                          src="/images/pokemon/Oak4.gif"
-                        />
-                      ) : howToPlayStep === 5 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(6)}
-                          src="/images/pokemon/Oak5.gif"
-                        />
-                      ) : howToPlayStep === 6 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(7)}
-                          src="/images/pokemon/Oak6.gif"
-                        />
-                      ) : howToPlayStep === 7 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(8)}
-                          src="/images/pokemon/Oak7.gif"
-                        />
-                      ) : howToPlayStep === 8 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(9)}
-                          src="/images/pokemon/Oak8.gif"
-                        />
-                      ) : howToPlayStep === 9 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(10)}
-                          src="/images/pokemon/Oak9.gif"
-                        />
-                      ) : howToPlayStep === 10 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => setHowToPlayStep(11)}
-                          src="/images/pokemon/Oak10.gif"
-                        />
-                      ) : howToPlayStep === 11 ? (
-                        <img
-                          alt="help"
-                          className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                          onClick={() => {
-                            setHowToPlayStep(1);
-                            setShowTutorial(false);
-                          }}
-                          src="/images/pokemon/Oak11.gif"
-                        />
-                      ) : null}
+                      <HowToPlay
+                        setShowTutorial={setShowTutorial}
+                        howToPlayStep={howToPlayStep}
+                        setHowToPlayStep={setHowToPlayStep}
+                      />
                     </div>
                   </div>
                 )}
@@ -293,65 +204,12 @@ export default function Pokemon() {
                         ) : showBalls ? (
                           <>
                             <div className="flex relative gap-3 justify-center w-full">
-                              <img
-                                alt="ball"
-                                className="w-40 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardOne)
-                                }
-                                ref={ballRef}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardOne?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardOne?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardOne?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardOne?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
-                              />
-                              <img
-                                alt="ball"
-                                className="w-40 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardTwo)
-                                }
-                                ref={ballRef2}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardTwo?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardTwo?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardTwo?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardTwo?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
-                              />
-                              <img
-                                alt="ball"
-                                className="w-40 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardThree)
-                                }
-                                ref={ballRef3}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardThree?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardThree?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardThree?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardThree?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
+                              <PokeBallSelector
+                                drawCards={drawCards}
+                                ballRef={ballRef}
+                                ballRef2={ballRef2}
+                                ballRef3={ballRef3}
+                                throwPokeBall={throwPokeBall}
                               />
                             </div>
                           </>
@@ -398,87 +256,11 @@ export default function Pokemon() {
               {showTutorial && (
                 <div>
                   <div className="mt-6 mb-12">
-                    {howToPlayStep === 1 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(2)}
-                        src="/images/pokemon/Oak1.gif"
-                      />
-                    ) : howToPlayStep === 2 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(3)}
-                        src="/images/pokemon/Oak2.gif"
-                      />
-                    ) : howToPlayStep === 3 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(4)}
-                        src="/images/pokemon/Oak3.gif"
-                      />
-                    ) : howToPlayStep === 4 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(5)}
-                        src="/images/pokemon/Oak4.gif"
-                      />
-                    ) : howToPlayStep === 5 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(6)}
-                        src="/images/pokemon/Oak5.gif"
-                      />
-                    ) : howToPlayStep === 6 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(7)}
-                        src="/images/pokemon/Oak6.gif"
-                      />
-                    ) : howToPlayStep === 7 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(8)}
-                        src="/images/pokemon/Oak7.gif"
-                      />
-                    ) : howToPlayStep === 8 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(9)}
-                        src="/images/pokemon/Oak8.gif"
-                      />
-                    ) : howToPlayStep === 9 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(10)}
-                        src="/images/pokemon/Oak9.gif"
-                      />
-                    ) : howToPlayStep === 10 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => setHowToPlayStep(11)}
-                        src="/images/pokemon/Oak10.gif"
-                      />
-                    ) : howToPlayStep === 11 ? (
-                      <img
-                        alt="help"
-                        className="border border-gray-200 drop-shadow-lg rounded-2xl"
-                        onClick={() => {
-                          setHowToPlayStep(1);
-                          setShowTutorial(false);
-                        }}
-                        src="/images/pokemon/Oak11.gif"
-                      />
-                    ) : null}
+                    <HowToPlay
+                      setShowTutorial={setShowTutorial}
+                      howToPlayStep={howToPlayStep}
+                      setHowToPlayStep={setHowToPlayStep}
+                    />
                   </div>
                 </div>
               )}
@@ -539,70 +321,13 @@ export default function Pokemon() {
                           </div>
                         ) : showBalls ? (
                           <div className="flex flex-col -mt-36 justify-center w-full">
-                            <div className="flex justify-center">
-                              <img
-                                alt="ball"
-                                className="w-20 h-20 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardOne)
-                                }
-                                ref={ballRef}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardOne?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardOne?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardOne?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardOne?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
-                              />
-                            </div>
-                            <div className="flex justify-center">
-                              <img
-                                alt="ball"
-                                className="w-20 h-20 mr-0.5 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardTwo)
-                                }
-                                ref={ballRef2}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardTwo?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardTwo?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardTwo?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardTwo?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
-                              />
-                              <img
-                                alt="ball"
-                                className="w-20 h-20 ml-0.5 focus:animate-spin-fast outline-none"
-                                onClick={() =>
-                                  throwPokeBall(drawCards?.cardThree)
-                                }
-                                ref={ballRef3}
-                                tabIndex={0}
-                                src={
-                                  Number(drawCards?.cardThree?.hp) < 100
-                                    ? "/images/pokemon/poke-ball.png"
-                                    : Number(drawCards?.cardThree?.hp) < 200
-                                    ? greatBallRandomizer()
-                                    : Number(drawCards?.cardThree?.hp) < 300
-                                    ? ultraBallRandomizer()
-                                    : Number(drawCards?.cardThree?.hp) < 500
-                                    ? "/images/pokemon/premier-ball.png"
-                                    : "/images/pokemon/poke-ball.png"
-                                }
-                              />
-                            </div>
+                            <PokeBallSelectorMobile
+                              drawCards={drawCards}
+                              ballRef={ballRef}
+                              ballRef2={ballRef2}
+                              ballRef3={ballRef3}
+                              throwPokeBall={throwPokeBall}
+                            />
                           </div>
                         ) : (
                           <div className="w-full flex justify-center">
@@ -627,3 +352,4 @@ export default function Pokemon() {
     </>
   );
 }
+// WAS 680 LINES OF CODE
