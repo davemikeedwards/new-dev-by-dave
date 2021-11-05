@@ -23,10 +23,43 @@ export default function Pokemon() {
   const [winner, setWinner] = useState(undefined);
   const [imageOneLoaded, setImageOneLoaded] = useState(false);
   const [imageTwoLoaded, setImageTwoLoaded] = useState(false);
+  const [winningScore, setWinningScore] = useState(20);
+  const [showGameTypeSelector, setShowGameTypeSelector] = useState(false);
+
+  const gameType = [
+    { name: "EXPRESS - 5", rounds: 5 },
+    { name: "SHORT - 10", rounds: 10 },
+    { name: "NORMAL - 20", rounds: 20 },
+    { name: "LONG - 50", rounds: 50 },
+    { name: "EPIC - 100", rounds: 100 },
+  ];
 
   const ballRef = useRef();
   const ballRef2 = useRef();
   const ballRef3 = useRef();
+
+  function restartGame() {
+    setDrawCards([
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+      {
+        card: pokemonCards[Math.floor(Math.random() * pokemonCards.length)],
+      },
+    ]);
+    setShowBalls(true);
+    setYourPokemon(undefined);
+    setOppPokemon(undefined);
+    setShowGame(false);
+    setYourScore(0);
+    setOppScore(0);
+    setWinner(undefined);
+    setImageOneLoaded(false);
+    setImageTwoLoaded(false);
+  }
 
   useEffect(() => {
     setPokemonCards(getPokemon());
@@ -72,9 +105,9 @@ export default function Pokemon() {
   }
 
   useEffect(() => {
-    if (yourScore === 20) {
+    if (yourScore === winningScore) {
       setWinner("You");
-    } else if (oppScore === 20) {
+    } else if (oppScore === winningScore) {
       setWinner("Opponent");
     }
   }, [yourScore, oppScore]);
@@ -237,20 +270,39 @@ export default function Pokemon() {
                 className="w-1/2"
                 src="/images/pokemon/pokemon-logo.png"
               />
-              {!showGame && !showTutorial && (
+              {!showGame && !showTutorial && !showGameTypeSelector && (
                 <div className="flex flex-col mt-6">
                   <div
-                    className="px-12 py-6 cursor-pointer mb-6 rounded-xl shadow-md bg-red-600 text-white font-nunito text-xl"
+                    className="px-12 py-6 text-center cursor-pointer mb-6 rounded-xl shadow-md bg-red-600 text-white font-nunito text-xl"
                     onClick={() => setShowTutorial(true)}
                   >
                     HOW TO PLAY
                   </div>
                   <div
-                    className="px-12 py-6 cursor-pointer rounded-xl shadow-md bg-blue-600 text-white font-nunito text-xl"
-                    onClick={() => setShowGame(true)}
+                    className="px-12 py-6 text-center cursor-pointer rounded-xl shadow-md bg-blue-600 text-white font-nunito text-xl"
+                    onClick={() => setShowGameTypeSelector(true)}
                   >
                     START GAME
                   </div>
+                </div>
+              )}
+              {showGameTypeSelector && (
+                <div className="flex flex-col mt-6">
+                  <div className="text-center mb-6">CHOOSE A GAME LENGTH</div>
+                  {gameType.map((type) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          setWinningScore(type.rounds);
+                          setShowGame(true);
+                          setShowGameTypeSelector(false);
+                        }}
+                        className="px-12 text-center py-6 mb-6 cursor-pointer rounded-xl shadow-md bg-blue-600 text-white font-nunito text-xl"
+                      >
+                        {type.name}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
               {showTutorial && (
@@ -340,7 +392,17 @@ export default function Pokemon() {
                         )}
                       </>
                     ) : (
-                      <div>The winner is {winner}!</div>
+                      <div className="flex -mt-24 flex-col items-center justify-center">
+                        <div className="mb-3 text-center">
+                          The winner is {winner}!
+                        </div>
+                        <div
+                          onClick={() => restartGame()}
+                          className="h-16 flex items-center px-6 font-nunito text-xl bg-blue-600 text-center cursor-pointer w-max rounded-xl shadow-md text-white"
+                        >
+                          PLAY AGAIN
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
