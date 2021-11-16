@@ -13,6 +13,7 @@ module.exports = {
         roboto: ["Roboto"],
         space: ["Space Mono"],
         hand: ["Shadows Into Light"],
+        lato: ["Lato"],
       },
       transitionDuration: ["hover", "focus", "active"],
       blur: {
