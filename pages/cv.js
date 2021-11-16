@@ -106,6 +106,7 @@ export default function Cv() {
             <div className="font-space text-sm">
               Pokémon Top Trumps Game (Personal)
             </div>
+            <div className="font-space text-sm">What The Photo (Personal)</div>
             <div className="font-space text-sm">My Website (Personal)</div>
             <div className="font-space text-sm">
               Hotel Management Platform (Academic)
